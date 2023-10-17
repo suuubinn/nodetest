@@ -1,0 +1,27 @@
+name: Node.js CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    # 배열 변수 선언 - python이나 node같은 
+    # 프로그래밍 언어는 여러 버전에서 동작  
+    strategy:
+      matrix:
+        node-version: [14.x]
+    # 작업 수행
+    # uses는 다른 곳에서 만든 것을 이용
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{matrix.node-version}}
+      - run: npm install
+      - run: npm test
